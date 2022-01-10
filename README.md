@@ -9,15 +9,15 @@ This workshop will cover foundational elements of modern practices of causal inf
 
 <div align="center">
 <a href='https://github.com/Mixtape-Sessions/Causal-Inference/'>
-<img src='https://img.shields.io/badge/Slides-gray?style=for-the-badge&color=52c5f2'>
+<img src="img/readme_slides.png" alt="Slides" width="20%">
 </a>
 &nbsp;
 <a href='https://github.com/Mixtape-Sessions/Causal-Inference/'>
-<img src='https://img.shields.io/badge/Code-blue?style=for-the-badge&color=4b5563'>
+<img src="img/readme_code.png" alt="Code" width="20%">
 </a>
 &nbsp;
 <a href='https://github.com/Mixtape-Sessions/Causal-Inference/'>
-<img src='https://img.shields.io/badge/Readings-green?style=for-the-badge&color=ff3881'>
+<img src="img/readme_reading.png" alt="Readings" width="20%">
 </a>
 </div>
 
