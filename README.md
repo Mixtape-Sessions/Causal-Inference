@@ -1,7 +1,7 @@
-<img src="banner.png" alt="Mixtape Sessions Banner" width="100%"> 
+<img src="img/banner.png" alt="Mixtape Sessions Banner" width="100%"> 
 <br/>
 
-<img src="readme_about.png" alt="Mixtape Sessions Banner" width="100%">
+<img src="img/readme_about.png" alt="Mixtape Sessions Banner" width="100%">
 <br/>
 
 This workshop will cover foundational elements of modern practices of causal inference such as the potential outcomes model as well as discuss in detail the most common designs: regression discontinuity, instrumental variables, difference in differences, comparative case studies using synthetic control and if time permitting matching. It will be accompanied by efforts to introduce students to basic practices in programming as well as good research practices more generally. 
@@ -24,7 +24,7 @@ This workshop will cover foundational elements of modern practices of causal inf
 
 
 <br/><br/>
-<img src="readme_schedule.png" alt="Mixtape Sessions Banner" width="100%"> 
+<img src="img/readme_schedule.png" alt="Mixtape Sessions Banner" width="100%"> 
 <br/>
 
 <details><summary><b>Potential Outcomes</b></summary><br/>
