@@ -27,43 +27,163 @@ This workshop will cover foundational elements of modern practices of causal inf
 <img src="readme_schedule.png" alt="Mixtape Sessions Banner" width="100%"> 
 <br/>
 
-<details><summary><b>Potential Outcomes</b></summary>
+<details><summary><b>Potential Outcomes</b></summary><br/>
+
+<b>About</b>
+... 
+
+<b>Slides</b>
+...
+
+<b>Code</b>
+...
+
+<b>Readings</b>
+...
 
 </details><br />
 
-<details><summary><b>Selection Bias</b></summary>
+<details><summary><b>Selection Bias</b></summary><br/>
+
+<b>About</b>
+... 
+
+<b>Slides</b>
+...
+
+<b>Code</b>
+...
+
+<b>Readings</b>
+...
+
+
 
 </details><br />
 
-<details><summary><b>Randomization Inference</b></summary>
+<details><summary><b>Randomization Inference</b></summary><br/>
+
+<b>About</b>
+... 
+
+<b>Slides</b>
+...
+
+<b>Code</b>
+...
+
+<b>Readings</b>
+...
+
+
 
 </details><br />
 
-<details><summary><b>Directed Acyclic Graphs</b></summary>
+<details><summary><b>Directed Acyclic Graphs</b></summary><br/>
+
+<b>About</b>
+... 
+
+<b>Slides</b>
+...
+
+<b>Code</b>
+...
+
+<b>Readings</b>
+...
+
+
 
 </details><br />
 
-<details><summary><b>Sharp Regression Discontinuity</b></summary>
+<details><summary><b>Sharp Regression Discontinuity</b></summary><br/>
+
+<b>About</b>
+... 
+
+<b>Slides</b>
+...
+
+<b>Code</b>
+...
+
+<b>Readings</b>
+...
+
+
 
 </details><br />
 
-<details><summary><b>Sharp Regression Discontinuity</b></summary>
+<details><summary><b>Instrumental Variables</b></summary><br/>
+
+<b>About</b>
+... 
+
+<b>Slides</b>
+...
+
+<b>Code</b>
+...
+
+<b>Readings</b>
+...
+
+
 
 </details><br />
 
-<details><summary><b>Instrumental Variables</b></summary>
+<details><summary><b>Difference-in-Differences</b></summary><br/>
+
+<b>About</b>
+... 
+
+<b>Slides</b>
+...
+
+<b>Code</b>
+...
+
+<b>Readings</b>
+...
+
+
 
 </details><br />
 
-<details><summary><b>Difference-in-Differences</b></summary>
+<details><summary><b>Synthetic Control</b></summary><br/>
+
+<b>About</b>
+... 
+
+<b>Slides</b>
+...
+
+<b>Code</b>
+...
+
+<b>Readings</b>
+...
+
+
 
 </details><br />
 
-<details><summary><b>Synthetic Control</b></summary>
+<details><summary><b>Matching</b></summary><br/>
 
-</details><br />
+<b>About</b>
+... 
 
-<details><summary><b>Matching</b></summary>
+<b>Slides</b>
+...
+
+<b>Code</b>
+...
+
+<b>Readings</b>
+...
+
+
 
 </details><br />
 
