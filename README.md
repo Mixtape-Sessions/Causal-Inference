@@ -7,8 +7,7 @@
 This workshop will cover foundational elements of modern practices of causal inference such as the potential outcomes model as well as discuss in detail the most common designs: regression discontinuity, instrumental variables, difference in differences, comparative case studies using synthetic control and if time permitting matching. It will be accompanied by efforts to introduce students to basic practices in programming as well as good research practices more generally. 
 <br/>
 
-<div align='center'>
-<h2>Quick Links</h2>
+<div align="center">
 <a href='https://github.com/Mixtape-Sessions/Causal-Inference/'>
 <img src='https://img.shields.io/badge/Slides-gray?style=for-the-badge&color=52c5f2'>
 </a>
