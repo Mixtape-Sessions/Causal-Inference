@@ -30,7 +30,8 @@ This workshop will cover foundational elements of modern practices of causal inf
 <details><summary><b>Potential Outcomes</b></summary><br/>
 
 <b>About</b>
-... 
+The modern theory of causality is based on a seemingly simple idea called the "counterfactual".  The counterfactual is an unusual features of the arsenal of modern statistics because it is more or less storytelling about alternative worlds that may or may not exist, but could have existed had one single decision gone a different way.  Out of this idea grew what a model, complete with its own language, on top of which the field of causal inference is based, and the purpose of this lecture is to learn that language.  The language is called potential outcomes and it forms the basis for many causal objects we tend to be interested in, such as the average treatment effect.
+
 
 <b>Slides</b>
 ...
@@ -39,6 +40,8 @@ This workshop will cover foundational elements of modern practices of causal inf
 ...
 
 <b>Readings</b>
+
+Mixtape chapter 4 <a href="https://mixtape.scunning.com/potential-outcomes.html">Potential Outcomes Causal Model</a>
 ...
 
 </details><br />
