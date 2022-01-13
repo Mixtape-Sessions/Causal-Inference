@@ -33,7 +33,7 @@ This workshop will cover foundational elements of modern practices of causal inf
 While causal inference is a design and model based approach to estimating causal effects, it ultimately uses large data sources, computers and programming languages to do that estimation.  Thus while you can teach causal inference as separate from empirical workflow, you shouldn't. Here I discuss my own personal beliefs about empirical workflow, going through such things as missingness in data, hierarchy of directories, version control and more.  
 
 <b>Slides</b>
-...
+<a href="https://github.com/Mixtape-Sessions/Causal-Inference/blob/main/Slides/00-Hidden_curriculum.pdf">Hidden curriculum slides</a>
 
 <b>Code</b>
 ...
