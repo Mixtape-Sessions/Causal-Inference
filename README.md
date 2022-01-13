@@ -27,6 +27,26 @@ This workshop will cover foundational elements of modern practices of causal inf
 <img src="img/readme_schedule.png" alt="Mixtape Sessions Banner" width="100%"> 
 <br/>
 
+<details><summary><b>Hidden Curriculum</b></summary><br/>
+
+<b>About</b>
+While causal inference is a design and model based approach to estimating causal effects, it ultimately uses large data sources, computers and programming languages to do that estimation.  Thus while you can teach causal inference as separate from empirical workflow, you shouldn't. Here I discuss my own personal beliefs about empirical workflow, going through such things as missingness in data, hierarchy of directories, version control and more.  
+
+<b>Slides</b>
+...
+
+<b>Code</b>
+...
+
+<b>Readings</b>
+
+Mixtape chapter 4 <a href="https://mixtape.scunning.com/potential-outcomes.html">Potential Outcomes Causal Model</a>
+...
+
+</details><br />
+
+
+
 <details><summary><b>Potential Outcomes</b></summary><br/>
 
 <b>About</b>
