@@ -65,8 +65,6 @@ Mixtape chapter 4 <a href="https://mixtape.scunning.com/potential-outcomes.html"
 
 </details><br />
 
-
-
 <details><summary><b>Directed Acyclic Graphs</b></summary><br/>
 
 <b>About</b>
@@ -89,30 +87,27 @@ Model-based approaches to identification can be sometimes better seen using caus
 Mixtape chapter 3 <a href="https://mixtape.scunning.com/dag.html">Directed Acyclic Graphs</a>
 
 
-
 </details><br />
 
 <details><summary><b>Sharp Regression Discontinuity</b></summary><br/>
 
 <b>About</b>
+One of the most desired quasi-experimental designs -- desired because it is viewed as highly credible despite being based on observational data -- is the regression discontinuity design.  Here I will discuss the sharp RDD in great detail, going through identification, estimation, specification tests and tips, as well as a replication.
 
-... 
 
 
 <b>Slides</b>
-
-...
+<a href="https://github.com/Mixtape-Sessions/Causal-Inference/blob/main/Slides/02-RDD.pdf">RDD slides</a>
 
 
 <b>Code</b>
-
-...
+* Stata: lmb.do files (several numbered), rdd_simulate.do (several numbered)
+* R: <a href="https://colab.research.google.com/github/scunning1975/mixtape_learnr/blob/main/R_ipynb/Regression_Discontinuity.ipynb">RDD</a>
+* python: <a href="https://colab.research.google.com/github/causalinfpython/mixtape/blob/main/Regression_Discontinuity.ipynb">RDD</a>
 
 
 <b>Readings</b>
-
-...
-
+Mixtape chapter 6: <a href="https://mixtape.scunning.com/regression-discontinuity.html">Regression discontinuity</a>
 
 
 </details><br />
