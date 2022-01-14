@@ -1,0 +1,47 @@
+\begin{table}[htbp]\centering
+\small
+\caption{Impact of Monetary Incentives and Distance on Learning HIV Test Results}
+\begin{center}
+\begin{threeparttable}
+\begin{tabular}{l*{4}{c}}
+\toprule
+\multicolumn{1}{l}{\textbf{Depvar:  Attendance at HIV results centers}}&
+\multicolumn{1}{c}{\textbf{(1)}}&
+\multicolumn{1}{c}{\textbf{(2)}}&
+\multicolumn{1}{c}{\textbf{(3)}}&
+\multicolumn{1}{c}{\textbf{(4)}}\\
+\midrule
+Received any incentive&       0.431***&       0.309***&       0.220***&       0.222***\\
+                    &     (0.022)   &     (0.025)   &     (0.029)   &     (0.029)   \\
+got\_hiv             &       0.229***&       0.226***&       0.223***&       0.215***\\
+                    &     (0.020)   &     (0.020)   &     (0.020)   &     (0.019)   \\
+Gender              &      -0.007   &      -0.011   &      -0.012   &      -0.012   \\
+                    &     (0.018)   &     (0.018)   &     (0.017)   &     (0.017)   \\
+Age                 &       0.003   &       0.002   &       0.002   &       0.003   \\
+                    &     (0.003)   &     (0.003)   &     (0.003)   &     (0.003)   \\
+Age squared         &      -0.000   &      -0.000   &      -0.000   &      -0.000   \\
+                    &     (0.000)   &     (0.000)   &     (0.000)   &     (0.000)   \\
+Rumphi              &      -0.133***&      -0.150***&      -0.156***&      -0.147***\\
+                    &     (0.029)   &     (0.029)   &     (0.029)   &     (0.029)   \\
+Balaka              &      -0.121***&      -0.126***&      -0.125***&      -0.113***\\
+                    &     (0.023)   &     (0.024)   &     (0.025)   &     (0.026)   \\
+Total value of the incentive (kwacha)&               &       0.091***&       0.269***&       0.270***\\
+                    &               &     (0.012)   &     (0.036)   &     (0.036)   \\
+t2                  &               &               &      -0.061***&      -0.062***\\
+                    &               &               &     (0.011)   &     (0.011)   \\
+Distance in km      &               &               &               &      -0.066** \\
+                    &               &               &               &     (0.028)   \\
+dist2               &               &               &               &       0.009*  \\
+                    &               &               &               &     (0.005)   \\
+\midrule
+N                   &       2,825   &       2,825   &       2,825   &       2,825   \\
+Mean of dependent variable&        0.69   &        0.69   &        0.69   &        0.69   \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\tiny
+\item * Notes: Sample includes individuals who tested for HIV and have demographic data. Columns 1–4 represent OLS coefficients; robust standard errors clustered by village (for 119 villages) with district fixed effects in parentheses. All specifications also include a term for age-squared.  is an indicator if the respondent received any nonzero monetary incentive.  is an indicator of being HIV positive. Distance is measured as a straight-line spherical distance from a respondent's home to a randomly assigned VCT center from geospatial coordinates and is measured in kilometers.  * p$<$0.10, ** p$<$0.05, *** p$<$0.01
+\end{tablenotes}
+\end{threeparttable}
+\end{center}
+\end{table}
