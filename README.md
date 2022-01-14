@@ -35,13 +35,6 @@ While causal inference is a design and model based approach to estimating causal
 <b>Slides</b>
 <a href="https://github.com/Mixtape-Sessions/Causal-Inference/blob/main/Slides/00-Hidden_curriculum.pdf">Hidden curriculum slides</a>
 
-<b>Code</b>
-...
-
-<b>Readings</b>
-
-Mixtape chapter 4 <a href="https://mixtape.scunning.com/potential-outcomes.html">Potential Outcomes Causal Model</a>
-...
 
 </details><br />
 
