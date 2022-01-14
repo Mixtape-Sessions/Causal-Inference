@@ -43,53 +43,22 @@ While causal inference is a design and model based approach to estimating causal
 <details><summary><b>Potential Outcomes</b></summary><br/>
 
 <b>About</b>
-The modern theory of causality is based on a seemingly simple idea called the "counterfactual".  The counterfactual is an unusual features of the arsenal of modern statistics because it is more or less storytelling about alternative worlds that may or may not exist, but could have existed had one single decision gone a different way.  Out of this idea grew what a model, complete with its own language, on top of which the field of causal inference is based, and the purpose of this lecture is to learn that language.  The language is called potential outcomes and it forms the basis for many causal objects we tend to be interested in, such as the average treatment effect.
+The modern theory of causality is based on a seemingly simple idea called the "counterfactual".  The counterfactual is an unusual features of the arsenal of modern statistics because it is more or less storytelling about alternative worlds that may or may not exist, but could have existed had one single decision gone a different way.  Out of this idea grew what a model, complete with its own language, on top of which the field of causal inference is based, and the purpose of this lecture is to learn that language.  The language is called potential outcomes and it forms the basis for many causal objects we tend to be interested in, such as the average treatment effect. I also cover randomization, selection bias and randomization inference.
 
 
 <b>Slides</b>
-...
+<a href="https://github.com/Mixtape-Sessions/Causal-Inference/blob/main/Slides/01-Foundations.pdf">Foundations of causality</a>
 
 <b>Code</b>
-...
+* Stata: ri.do, tea.do, thornton\_ri.do
+* R: <a href="https://colab.research.google.com/github/scunning1975/mixtape_learnr/blob/main/R_ipynb/Potential_Outcomes.ipynb">Potential outcomes
+* python: <a href="https://colab.research.google.com/github/causalinfpython/mixtape/blob/main/Potential_Outcomes.ipynb">Potential outcomes</a>
 
 <b>Readings</b>
 
 Mixtape chapter 4 <a href="https://mixtape.scunning.com/potential-outcomes.html">Potential Outcomes Causal Model</a>
-...
 
 </details><br />
-
-<details><summary><b>Selection Bias</b></summary><br/>
-
-<b>About</b>
-... 
-
-<b>Slides</b>
-...
-
-<b>Code</b>
-...
-
-<b>Readings</b>
-...
-
-
-
-</details><br />
-
-<details><summary><b>Randomization Inference</b></summary><br/>
-
-<b>About</b>
-... 
-
-<b>Slides</b>
-...
-
-<b>Code</b>
-...
-
-<b>Readings</b>
-...
 
 
 
@@ -98,16 +67,19 @@ Mixtape chapter 4 <a href="https://mixtape.scunning.com/potential-outcomes.html"
 <details><summary><b>Directed Acyclic Graphs</b></summary><br/>
 
 <b>About</b>
-... 
+Model-based approaches to identification can be sometimes better seen using causal graphs called directed acyclic graphs (DAGs).  These modeling approaches are compatible with the design-based approach, but tend to emphasize a priori domain knowledge as opposed to treatment manipulation exclusively.  Here we discuss the backdoor criterion, the frontdoor criterion, and collider bias.
 
 <b>Slides</b>
-...
+<a href="https://github.com/Mixtape-Sessions/Causal-Inference/blob/main/Slides/01-Foundations.pdf">Foundations of causality</a>
 
 <b>Code</b>
-...
+* Stata: moviestar.do, collider_discrimination.do
+* R: <a href="https://colab.research.google.com/github/scunning1975/mixtape_learnr/blob/main/R_ipynb/Directed_Acyclical_Graphs.ipynb">DAGs</a>
+* python: <a href="https://colab.research.google.com/github/causalinfpython/mixtape/blob/main/Directed%20Acyclic%20Graphs.ipynb">DAGs</a>
+
 
 <b>Readings</b>
-...
+Mixtape chapter 3 <a href="https://mixtape.scunning.com/dag.html">Directed Acyclic Graphs</a>
 
 
 
