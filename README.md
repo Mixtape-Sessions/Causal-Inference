@@ -62,6 +62,7 @@ The modern theory of causality is based on a seemingly simple idea called the "c
 <b>Readings</b>
 
 Mixtape chapter 4 <a href="https://mixtape.scunning.com/potential-outcomes.html">Potential Outcomes Causal Model</a>
+Software: <a href="http://www.dagitty.net">Daggity</a>
 
 </details><br />
 
