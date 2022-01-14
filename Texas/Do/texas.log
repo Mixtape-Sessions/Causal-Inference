@@ -1,0 +1,411 @@
+
+. 
+. 
+. * ssc install synth, replace
+. * ssc install mat2txt, replace
+. 
+. * Estimation 1: Texas model of black male prisoners (per capita)
+. use ../data/texas.dta, replace
+
+. 
+. 
+. 
+. #delimit;
+delimiter now ;
+. synth   bmprison 
+>                 bmprison(1990) bmprison(1992) bmprison(1991) bmprison(1988)
+>                 alcohol(1990) aidscapita(1990) aidscapita(1991) 
+>                 income ur poverty black(1990) black(1991) black(1992) 
+>                 perc1519(1990)
+>                 ,               
+>                 trunit(17) trperiod(1993) unitnames(state) 
+>                 mspeperiod(1985(1)1993) resultsperiod(1985(1)2000)
+>                 keep(../data/synth/synth_bmprate.dta) replace fig;
+------------------------------------------------------------------------------------------
+Synthetic Control Method for Comparative Case Studies
+------------------------------------------------------------------------------------------
+
+First Step: Data Setup
+------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+Data Setup successful
+------------------------------------------------------------------------------------------
+                Treated Unit: Illinois
+               Control Units: Alabama, Alaska, Arizona, Arkansas, California, Colorado,
+                              Connecticut, Delaware, District of Columbia, Florida,
+                              Georgia, Hawaii, Idaho, Indiana, Iowa, Kansas, Kentucky,
+                              Louisiana, Maine, Maryland, Massachusetts, Michigan,
+                              Minnesota, Mississippi, Missouri, Montana, Nebraska, Nevada,
+                              New Hampshire, New Jersey, New Mexico, New York, North
+                              Carolina, North Dakota, Ohio, Oklahoma, Oregon,
+                              Pennsylvania, Rhode Island, South Carolina, South Dakota,
+                              Tennessee, Texas, Utah, Vermont, Virginia, Washington, West
+                              Virginia, Wisconsin, Wyoming
+------------------------------------------------------------------------------------------
+          Dependent Variable: bmprison
+  MSPE minimized for periods: 1985 1986 1987 1988 1989 1990 1991 1992 1993
+Results obtained for periods: 1985 1986 1987 1988 1989 1990 1991 1992 1993 1994 1995 1996
+                              1997 1998 1999 2000
+------------------------------------------------------------------------------------------
+                  Predictors: bmprison(1990) bmprison(1992) bmprison(1991) bmprison(1988)
+                              alcohol(1990) aidscapita(1990) aidscapita(1991) income ur
+                              poverty black(1990) black(1991) black(1992) perc1519(1990)
+------------------------------------------------------------------------------------------
+Unless period is specified
+predictors are averaged over: 1985 1986 1987 1988 1989 1990 1991 1992
+------------------------------------------------------------------------------------------
+
+Second Step: Run Optimization
+------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+Optimization done
+------------------------------------------------------------------------------------------
+
+Third Step: Obtain Results
+------------------------------------------------------------------------------------------
+Loss: Root Mean Squared Prediction Error
+
+---------------------
+   RMSPE |   334.531 
+---------------------
+------------------------------------------------------------------------------------------
+Unit Weights:
+
+----------------------------------
+               Co_No | Unit_Weight
+---------------------+------------
+             Alabama |        .069
+              Alaska |           0
+             Arizona |           0
+            Arkansas |           0
+          California |           0
+            Colorado |           0
+         Connecticut |           0
+            Delaware |           0
+District of Columbia |           0
+             Florida |        .057
+             Georgia |           0
+              Hawaii |           0
+               Idaho |           0
+             Indiana |           0
+                Iowa |           0
+              Kansas |           0
+            Kentucky |           0
+           Louisiana |           0
+               Maine |           0
+            Maryland |           0
+       Massachusetts |           0
+            Michigan |           0
+           Minnesota |           0
+         Mississippi |           0
+            Missouri |           0
+             Montana |           0
+            Nebraska |           0
+              Nevada |           0
+       New Hampshire |           0
+          New Jersey |           0
+          New Mexico |           0
+            New York |           0
+      North Carolina |           0
+        North Dakota |           0
+                Ohio |        .251
+            Oklahoma |           0
+              Oregon |           0
+        Pennsylvania |           0
+        Rhode Island |           0
+      South Carolina |           0
+        South Dakota |           0
+           Tennessee |        .038
+               Texas |        .313
+                Utah |           0
+             Vermont |           0
+            Virginia |        .271
+          Washington |           0
+       West Virginia |           0
+           Wisconsin |           0
+             Wyoming |           0
+----------------------------------
+------------------------------------------------------------------------------------------
+Predictor Balance:
+
+------------------------------------------------------
+                               |   Treated  Synthetic 
+-------------------------------+----------------------
+                bmprison(1990) |     16220   16027.62 
+                bmprison(1992) |     19444   19410.99 
+                bmprison(1991) |     17501   17409.09 
+                bmprison(1988) |     11975   12212.03 
+                 alcohol(1990) |      2.62    2.26416 
+              aidscapita(1990) |  8.565205   9.072306 
+              aidscapita(1991) |  10.59732   10.33121 
+                        income |   19050.5   17027.72 
+                            ur |  7.367708     6.4977 
+                       poverty |   13.9375    14.0596 
+                   black(1990) |  16.40337   16.38378 
+                   black(1991) |  16.57732   16.55635 
+                   black(1992) |  16.77681   16.76344 
+                perc1519(1990) |  7.120968   7.322935 
+------------------------------------------------------
+------------------------------------------------------------------------------------------
+
+.                 mat list e(V_matrix);
+
+symmetric e(V_matrix)[14,14]
+                   bmprison(      bmprison(      bmprison(      bmprison(                
+                       1990)          1992)          1991)          1988)  alcohol(1990)
+     bmprison(
+        1990)      .04203396
+     bmprison(
+        1992)              0      .14521907
+     bmprison(
+        1991)              0              0      .05565401
+     bmprison(
+        1988)              0              0              0       .0412083
+alcohol(1990)              0              0              0              0      .00001507
+   aidscapita(
+        1990)              0              0              0              0              0
+   aidscapita(
+        1991)              0              0              0              0              0
+       income              0              0              0              0              0
+           ur              0              0              0              0              0
+      poverty              0              0              0              0              0
+  black(1990)              0              0              0              0              0
+  black(1991)              0              0              0              0              0
+  black(1992)              0              0              0              0              0
+     perc1519(
+        1990)              0              0              0              0              0
+
+                 aidscapita(    aidscapita(                                              
+                       1990)          1991)         income             ur        poverty
+   aidscapita(
+        1990)      .01537127
+   aidscapita(
+        1991)              0      .01617833
+       income              0              0      .00005753
+           ur              0              0              0      .00002568
+      poverty              0              0              0              0      .00007734
+  black(1990)              0              0              0              0              0
+  black(1991)              0              0              0              0              0
+  black(1992)              0              0              0              0              0
+     perc1519(
+        1990)              0              0              0              0              0
+
+                                                                perc1519(
+                 black(1990)    black(1991)    black(1992)          1990)
+  black(1990)      .17576799
+  black(1991)              0      .44121217
+  black(1992)              0              0       .0671646
+     perc1519(
+        1990)              0              0              0      .00001468
+
+. #delimit cr
+delimiter now cr
+. 
+end of do-file
+
+. do "/var/folders/9d/_2mr739j3sz0szn1f4fsypss5n8_l0/T//SD04420.000000"
+
+. drop if statefip==48
+(16 observations deleted)
+
+. 
+. #delimit;
+delimiter now ;
+. synth   bmprison 
+>                 bmprison(1990) bmprison(1992) bmprison(1991) bmprison(1988)
+>                 alcohol(1990) aidscapita(1990) aidscapita(1991) 
+>                 income ur poverty black(1990) black(1991) black(1992) 
+>                 perc1519(1990)
+>                 ,               
+>                 trunit(17) trperiod(1993) unitnames(state) 
+>                 mspeperiod(1985(1)1993) resultsperiod(1985(1)2000)
+>                 keep(../data/synth/synth_bmprate.dta) replace fig;
+------------------------------------------------------------------------------------------
+Synthetic Control Method for Comparative Case Studies
+------------------------------------------------------------------------------------------
+
+First Step: Data Setup
+------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+Data Setup successful
+------------------------------------------------------------------------------------------
+                Treated Unit: Illinois
+               Control Units: Alabama, Alaska, Arizona, Arkansas, California, Colorado,
+                              Connecticut, Delaware, District of Columbia, Florida,
+                              Georgia, Hawaii, Idaho, Indiana, Iowa, Kansas, Kentucky,
+                              Louisiana, Maine, Maryland, Massachusetts, Michigan,
+                              Minnesota, Mississippi, Missouri, Montana, Nebraska, Nevada,
+                              New Hampshire, New Jersey, New Mexico, New York, North
+                              Carolina, North Dakota, Ohio, Oklahoma, Oregon,
+                              Pennsylvania, Rhode Island, South Carolina, South Dakota,
+                              Tennessee, Utah, Vermont, Virginia, Washington, West
+                              Virginia, Wisconsin, Wyoming
+------------------------------------------------------------------------------------------
+          Dependent Variable: bmprison
+  MSPE minimized for periods: 1985 1986 1987 1988 1989 1990 1991 1992 1993
+Results obtained for periods: 1985 1986 1987 1988 1989 1990 1991 1992 1993 1994 1995 1996
+                              1997 1998 1999 2000
+------------------------------------------------------------------------------------------
+                  Predictors: bmprison(1990) bmprison(1992) bmprison(1991) bmprison(1988)
+                              alcohol(1990) aidscapita(1990) aidscapita(1991) income ur
+                              poverty black(1990) black(1991) black(1992) perc1519(1990)
+------------------------------------------------------------------------------------------
+Unless period is specified
+predictors are averaged over: 1985 1986 1987 1988 1989 1990 1991 1992
+------------------------------------------------------------------------------------------
+
+Second Step: Run Optimization
+------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+Optimization done
+------------------------------------------------------------------------------------------
+
+Third Step: Obtain Results
+------------------------------------------------------------------------------------------
+Loss: Root Mean Squared Prediction Error
+
+---------------------
+   RMSPE |  541.5501 
+---------------------
+------------------------------------------------------------------------------------------
+Unit Weights:
+
+----------------------------------
+               Co_No | Unit_Weight
+---------------------+------------
+             Alabama |           0
+              Alaska |           0
+             Arizona |           0
+            Arkansas |           0
+          California |           0
+            Colorado |           0
+         Connecticut |           0
+            Delaware |           0
+District of Columbia |           0
+             Florida |        .182
+             Georgia |           0
+              Hawaii |           0
+               Idaho |           0
+             Indiana |           0
+                Iowa |           0
+              Kansas |           0
+            Kentucky |           0
+           Louisiana |        .175
+               Maine |           0
+            Maryland |           0
+       Massachusetts |           0
+            Michigan |           0
+           Minnesota |           0
+         Mississippi |           0
+            Missouri |           0
+             Montana |           0
+            Nebraska |           0
+              Nevada |           0
+       New Hampshire |           0
+          New Jersey |           0
+          New Mexico |           0
+            New York |           0
+      North Carolina |           0
+        North Dakota |           0
+                Ohio |        .524
+            Oklahoma |           0
+              Oregon |           0
+        Pennsylvania |           0
+        Rhode Island |           0
+      South Carolina |           0
+        South Dakota |           0
+           Tennessee |           0
+                Utah |           0
+             Vermont |           0
+            Virginia |        .119
+          Washington |           0
+       West Virginia |           0
+           Wisconsin |           0
+             Wyoming |           0
+----------------------------------
+------------------------------------------------------------------------------------------
+Predictor Balance:
+
+------------------------------------------------------
+                               |   Treated  Synthetic 
+-------------------------------+----------------------
+                bmprison(1990) |     16220   15984.98 
+                bmprison(1992) |     19444   19137.42 
+                bmprison(1991) |     17501   17952.57 
+                bmprison(1988) |     11975   12520.24 
+                 alcohol(1990) |      2.62     2.3378 
+              aidscapita(1990) |  8.565205   8.965679 
+              aidscapita(1991) |  10.59732   10.43825 
+                        income |   19050.5   16895.19 
+                            ur |  7.367708   6.990223 
+                       poverty |   13.9375   14.05705 
+                   black(1990) |  16.40337   16.38661 
+                   black(1991) |  16.57732   16.58237 
+                   black(1992) |  16.77681   16.81744 
+                perc1519(1990) |  7.120968   7.137546 
+------------------------------------------------------
+------------------------------------------------------------------------------------------
+
+.                 mat list e(V_matrix);
+
+symmetric e(V_matrix)[14,14]
+                   bmprison(      bmprison(      bmprison(      bmprison(                
+                       1990)          1992)          1991)          1988)  alcohol(1990)
+     bmprison(
+        1990)      .02075443
+     bmprison(
+        1992)              0      .13444628
+     bmprison(
+        1991)              0              0      .05785551
+     bmprison(
+        1988)              0              0              0      .02206612
+alcohol(1990)              0              0              0              0      9.941e-06
+   aidscapita(
+        1990)              0              0              0              0              0
+   aidscapita(
+        1991)              0              0              0              0              0
+       income              0              0              0              0              0
+           ur              0              0              0              0              0
+      poverty              0              0              0              0              0
+  black(1990)              0              0              0              0              0
+  black(1991)              0              0              0              0              0
+  black(1992)              0              0              0              0              0
+     perc1519(
+        1990)              0              0              0              0              0
+
+                 aidscapita(    aidscapita(                                              
+                       1990)          1991)         income             ur        poverty
+   aidscapita(
+        1990)      .00922797
+   aidscapita(
+        1991)              0      .00983812
+       income              0              0      .00004029
+           ur              0              0              0      .00001886
+      poverty              0              0              0              0      .00005548
+  black(1990)              0              0              0              0              0
+  black(1991)              0              0              0              0              0
+  black(1992)              0              0              0              0              0
+     perc1519(
+        1990)              0              0              0              0              0
+
+                                                                perc1519(
+                 black(1990)    black(1991)    black(1992)          1990)
+  black(1990)       .1673093
+  black(1991)              0      .48869817
+  black(1992)              0              0      .08966836
+     perc1519(
+        1990)              0              0              0      .00001117
+
+. #delimit cr
+delimiter now cr
+. 
+end of do-file
+
+. clear
+
+. do "/var/folders/9d/_2mr739j3sz0szn1f4fsypss5n8_l0/T//SD04420.000000"
+
+. 
+. clear
+
+. capture log close
