@@ -50,7 +50,7 @@ The modern theory of causality is based on a seemingly simple idea called the "c
 <a href="https://github.com/Mixtape-Sessions/Causal-Inference/blob/main/Slides/01-Foundations.pdf">Foundations of causality</a>
 
 <b>Code</b>
-* Stata: ri.do, tea.do, thornton\_ri.do
+* Stata: /Code/ri.do, /Code/tea.do, /Code/thornton\_ri.do
 * R: <a href="https://colab.research.google.com/github/scunning1975/mixtape_learnr/blob/main/R_ipynb/Potential_Outcomes.ipynb">Potential outcomes
 * python: <a href="https://colab.research.google.com/github/causalinfpython/mixtape/blob/main/Potential_Outcomes.ipynb">Potential outcomes</a>
 
@@ -73,7 +73,7 @@ Model-based approaches to identification can be sometimes better seen using caus
 <a href="https://github.com/Mixtape-Sessions/Causal-Inference/blob/main/Slides/01-Foundations.pdf">Foundations of causality</a>
 
 <b>Code</b>
-* Stata: moviestar.do, collider_discrimination.do
+* Stata: /Code/moviestar.do, /Code/collider_discrimination.do
 * R: <a href="https://colab.research.google.com/github/scunning1975/mixtape_learnr/blob/main/R_ipynb/Directed_Acyclical_Graphs.ipynb">DAGs</a>
 * python: <a href="https://colab.research.google.com/github/causalinfpython/mixtape/blob/main/Directed%20Acyclic%20Graphs.ipynb">DAGs</a>
 
