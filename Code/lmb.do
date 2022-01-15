@@ -1,12 +1,19 @@
+********************************************************************************
 * name: lmb.do
-* section: regression discontinuity
+* author: marcelo perraillon (uc denver) with modifications by scott cunningham (baylor)
+* description: replication of Lee, Moretti and Butler with additional analysis and robustness
+* last updated: january 15, 2022
+********************************************************************************
+clear
+capture log close
+
 
 * Load the raw data into memory
 use https://github.com/scunning1975/mixtape/raw/master/lmb-data.dta, clear
 net install rdrobust, from(https://raw.githubusercontent.com/rdpackages/rdrobust/master/stata) replace
 ssc install rdrobust, replace
- net install rddensity, from(https://raw.githubusercontent.com/rdpackages/rddensity/master/stata) replace
- net install lpdensity, from(https://sites.google.com/site/nppackages/lpdensity/stata) replace
+net install rddensity, from(https://raw.githubusercontent.com/rdpackages/rddensity/master/stata) replace
+net install lpdensity, from(https://sites.google.com/site/nppackages/lpdensity/stata) replace
 
 * Replicating Table 1 of Lee, Moretti and Butler (2004)
 reg score lagdemocrat    if lagdemvoteshare>.48 & lagdemvoteshare<.52, cluster(id)
