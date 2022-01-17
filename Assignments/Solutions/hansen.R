@@ -10,12 +10,17 @@
 #install.packages("httpgd") 
 #install.packages("languageserver")
 #install.packages("fixest")
+#if (!requireNamespace("remotes")) {
+#  install.packages("remotes")
+#}
+#remotes::install_github("kolesarm/RDHonest", force=TRUE)
 
 library(tidyverse)
 library(haven)
 library(estimatr)
 library(ggplot2)
 library(fixest) # fixest is the go to for estimation in R
+library(RDHonest)
 
 ## Load Hansen's dataset into memory
 hansen <- read_dta("https://github.com/scunning1975/mixtape/raw/master/hansen_dwi.dta")
@@ -63,4 +68,19 @@ fixest::etable(white, male, aged, acc,
 			   tex = T, 
 			   file = "hansen_predetermined_covariates.tex")
 
+
+## I'm not getting balanced covariates on aged and acc and I can't figure out why.  It's not balanced in Stata either.
+
+
+## Question 3. Make Figure 2 panels A to D using both linear and quadratic fits
+
+
+## Question 4. Main results with recidivism (recid) as the outcome. 
+hansen_subset$bac1_squared <- hansen_subset$bac1^2
+
+(recid_column1 <- feols(recidivism ~ dwi + bac1 + male + white + aged + acc, data=hansen_subset, vcov="HC1"))
+
+(recid_column2 <- feols(recidivism ~ dwi*bac1 + male + white + aged + acc, data=hansen_subset, vcov="HC1"))
+
+(recid_column3 <- feols(recidivism ~ dwi*bac1 + dwi*bac1_squared + male + white + aged + acc, data=hansen_subset, vcov="HC1"))
 
