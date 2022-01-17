@@ -6,15 +6,8 @@
 # last updated: january 16, 2022
 #######################################################################################
 
-#install.packages("readstata13")
-#install.packages("httpgd") 
-#install.packages("languageserver")
-#install.packages("fixest")
-
 library(tidyverse)
 library(haven)
-library(estimatr)
-library(ggplot2)
 library(fixest) # fixest is the go to for estimation in R
 
 ## Load Hansen's dataset into memory
