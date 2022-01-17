@@ -1,7 +1,14 @@
-lmb_data %>% 
+lmb_data <- lmb_data %>% 
   mutate(demvoteshare_sq = demvoteshare_c^2)
 
-lm_1 <- lm_robust(score ~ lagdemocrat*demvoteshare_c + lagdemocrat*demvoteshare_sq, 
+lmb_data <- lmb_data %>% 
+  mutate(lagdemvoteshare_c = lagdemvoteshare - 0.5)
+
+lmb_data <- lmb_data %>% 
+  mutate(lagdemvoteshare_sq = lagdemvoteshare_c^2)
+
+
+lm_1 <- lm_robust(score ~ lagdemocrat*lagdemvoteshare_c + lagdemocrat*lagdemvoteshare_sq, 
                   data = lmb_data, clusters = id)
 lm_2 <- lm_robust(score ~ democrat*demvoteshare_c + democrat*demvoteshare_sq, 
                   data = lmb_data, clusters = id)

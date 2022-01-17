@@ -46,7 +46,7 @@ reg white dui##c.bac1 if bac1>=0.03 & bac1<=0.13, robust //not going to cluster 
 * but that's in R and I'm not going to do it.
 reg male dui##c.bac1 if bac1>=0.03 & bac1<=0.13, robust //not going to cluster on the running
 reg acc dui##c.bac1 if bac1>=0.03 & bac1<=0.13, robust //not going to cluster on the running
-reg aged dui##c.(bac1 bac if bac1>=0.03 & bac1<=0.13, robust //not going to cluster on the running
+reg aged dui##c.bac1 if bac1>=0.03 & bac1<=0.13, robust //not going to cluster on the running
 
 
 * Q4: Our main results. regression of recidivism onto the equation (1) model. 
