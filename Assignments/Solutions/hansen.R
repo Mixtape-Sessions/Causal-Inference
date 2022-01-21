@@ -6,7 +6,6 @@
 # last updated: january 16, 2022
 #######################################################################################
 
-<<<<<<< HEAD
 #install.packages("readstata13")
 #install.packages("httpgd") 
 #install.packages("languageserver")
@@ -15,7 +14,7 @@
 #  install.packages("remotes")
 #}
 #remotes::install_github("kolesarm/RDHonest", force=TRUE)
-
+#install.packages("rdrobust")
 
 library(readstata13)
 library(tidyverse)
@@ -23,76 +22,32 @@ library(haven)
 library(fixest) # fixest is the go to for estimation in R
 library(RDHonest)
 library(ggplot2)
+library(rdrobust)
 
 ## Load Hansen's dataset into memory
 hansen <- read_dta("https://github.com/scunning1975/mixtape/raw/master/hansen_dwi.dta")
 setwd('/users/scott_cunningham/Documents/Causal-Inference/Automation')
 getwd()
 
-# List the variables
-str(hansen)
+#create dummy
+df<-
+  df %>% 
+  mutate(dui = if_else(bac1>=.08, 1, 0))
 
-## Question 1
-# 1a. Generate a dummy variable.  bac1>=0.08
-hansen$dwi <- hansen$bac1>=0.08
-hansen$dwi[is.na(hansen$dwi)] <- 0
+#make variables into grouped means
+df<-
+  df %>% 
+  filter(bac1>=.03 & bac1<=.13) %>% 
+  select(bac1, acc, male, aged, white, dui, recidivism) %>% 
+  mutate(bac_bin = cut(bac1, breaks = seq(.03,.13, by=.001))) %>% 
+  group_by(bac_bin) %>% 
+  mutate(acc = mean(acc),
+         male = mean(male),
+         age = mean(aged),
+         white = mean(white),
+         recidivism = mean(recidivism))
 
-# 1b first stab. Histogram of bac1 with bins of 100 -- looks good
-hist(hansen$bac1, col='skyblue3', breaks=100)
-abline(col= "red", v=0.08)
-
-# 1b second stab. Histogram of bac1 with bins of 150 -- still looks good
-hist(hansen$bac1, col='skyblue3', breaks=150)
-abline(col= "black", v=0.08)
-
-# 1c second stab. Histogram of bac1 with bins of 200 -- shows the weird heaping patterns
-hist(hansen$bac1, col='skyblue3', breaks=200)
-abline(col= "orange", v=0.08)
-
-## Question 2.  Recreate Table 2 Panel A for white, male, aged and acc
-# Equation (1): yi = Xi′γ + α1DUIi + α2BACi + α3BACi × DUIi + ui
-
-hansen_subset <- hansen %>% 
-  filter(bac1>0.03 & bac1<0.13)
-
-(white <- feols(white ~ bac1*dwi, data=hansen_subset, vcov="HC1"))
-
-(male <- feols(male ~ bac1*dwi, data=hansen_subset, vcov="HC1"))
-
-(aged <- feols(aged ~ bac1*dwi, data=hansen_subset, vcov="HC1"))
-
-(acc <- feols(acc ~ bac1*dwi, data=hansen_subset, vcov="HC1"))
-
-# Regression Table (LaTeX File)
-
-fixest::etable(white, male, aged, acc,
-			   title = "Regression Discontinuity Estimates for the Effect of Exceeding BAC Thresholds on Predetermined Characteristics", 
-			   tex = T, 
-			   file = "hansen_predetermined_covariates.tex")
-
-
-## I'm not getting balanced covariates on aged and acc and I can't figure out why.  It's not balanced in Stata either.
-
-
-## Question 3. Make Figure 2 panels A to D using both linear and quadratic fits
-#plotting
-hansen_subset <- hansen_subset %>% 
-  mutate(gg_group = case_when(bac1 > 0.08 ~ 0.14, TRUE ~ 0))
-
-ggplot(hansen_subset, aes(bac1, recidivism)) +
-  geom_point(aes(x = bac1, y = recidivism), data = hansen_subset) +
-  stat_smooth(aes(bac1, recidivism, group = gg_group), method = "lm", 
-              formula = y ~ x + I(x^2)) +
-  xlim(0,1) + ylim(0,0.14) +
-  geom_vline(xintercept = 0.08)
-
-
-## Question 4. Main results with recidivism (recid) as the outcome. 
-hansen_subset$bac1_squared <- hansen_subset$bac1^2
-
-(recid_column1 <- feols(recidivism ~ dwi + bac1 + male + white + aged + acc, data=hansen_subset, vcov="HC1"))
-
-(recid_column2 <- feols(recidivism ~ dwi*bac1 + male + white + aged + acc, data=hansen_subset, vcov="HC1"))
-
-(recid_column3 <- feols(recidivism ~ dwi*bac1 + dwi*bac1_squared + male + white + aged + acc, data=hansen_subset, vcov="HC1"))
-
+#look at bac by recidivism
+df %>% 
+  ggplot(aes(x=bac_bin, y=recidivism)) +
+  geom_point()

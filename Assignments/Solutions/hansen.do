@@ -10,6 +10,13 @@ clear
 cd "/Users/scott_cunningham/Dropbox/CI Workshop/Assignments/Hansen"
 capture log using ./hansen.log, replace
 
+* Load the raw data into memory
+use https://github.com/scunning1975/mixtape/raw/master/lmb-data.dta, clear
+net install rdrobust, from(https://raw.githubusercontent.com/rdpackages/rdrobust/master/stata) replace
+ssc install rdrobust, replace
+net install rddensity, from(https://raw.githubusercontent.com/rdpackages/rddensity/master/stata) replace
+net install lpdensity, from(https://sites.google.com/site/nppackages/lpdensity/stata) replace
+
 * load the data from github
 use https://github.com/scunning1975/causal-inference-class/raw/master/hansen_dwi, clear
 
@@ -81,7 +88,9 @@ rdrobust recidivism bac1 if donut==0, kernel(uniform) masspoints(off) p(2) c(0.0
 cmogram recidivism bac1 if bac1>0.055 & bac1<0.105 & donut==0, cut(0.08) scatter line(0.08) lfitci
 
 * rdplot
-rdplot recidivism bac1 if bac1>=0.03 & bac1<=0.13, p(4) masspoints(off) c(0.08) graph_options(title(RD Plot Recidivism and BAC))
+rdplot recidivism bac1 if bac1>=0.03 & bac1<=0.13, p(2) masspoints(off) c(0.08) graph_options(title(RD Plot Recidivism and BAC))
 
+* McCrary density test: remember it's a density test *on the running variable* (lagdemvoteshare)
+rddensity bac1, c(0.08) plot
 
 
