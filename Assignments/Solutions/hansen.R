@@ -6,6 +6,7 @@
 # last updated: january 16, 2022
 #######################################################################################
 
+<<<<<<< HEAD
 #install.packages("readstata13")
 #install.packages("httpgd") 
 #install.packages("languageserver")
@@ -15,12 +16,13 @@
 #}
 #remotes::install_github("kolesarm/RDHonest", force=TRUE)
 
+
+library(readstata13)
 library(tidyverse)
 library(haven)
-library(estimatr)
-library(ggplot2)
 library(fixest) # fixest is the go to for estimation in R
 library(RDHonest)
+library(ggplot2)
 
 ## Load Hansen's dataset into memory
 hansen <- read_dta("https://github.com/scunning1975/mixtape/raw/master/hansen_dwi.dta")
@@ -73,6 +75,16 @@ fixest::etable(white, male, aged, acc,
 
 
 ## Question 3. Make Figure 2 panels A to D using both linear and quadratic fits
+#plotting
+hansen_subset <- hansen_subset %>% 
+  mutate(gg_group = case_when(bac1 > 0.08 ~ 0.14, TRUE ~ 0))
+
+ggplot(hansen_subset, aes(bac1, recidivism)) +
+  geom_point(aes(x = bac1, y = recidivism), data = hansen_subset) +
+  stat_smooth(aes(bac1, recidivism, group = gg_group), method = "lm", 
+              formula = y ~ x + I(x^2)) +
+  xlim(0,1) + ylim(0,0.14) +
+  geom_vline(xintercept = 0.08)
 
 
 ## Question 4. Main results with recidivism (recid) as the outcome. 
