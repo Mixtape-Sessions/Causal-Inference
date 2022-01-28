@@ -1,6 +1,8 @@
 clear
 capture log close
 
+* ssc install estout
+
 * This do file will estimate a simple regression and produce a simple table with covariates
 
 use https://github.com/scunning1975/mixtape/raw/master/card.dta, clear
