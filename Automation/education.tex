@@ -1,35 +1,36 @@
-\begin{table}[htbp]\centering
-\small
-\caption{OLS estimates of effect of college on log wages}
-\begin{center}
-\begin{threeparttable}
-\begin{tabular}{l*{2}{c}}
-\toprule
-\multicolumn{1}{l}{\textbf{Dependent variable: log(wages)}}&
-\multicolumn{1}{c}{\textbf{(1)}}&
-\multicolumn{1}{c}{\textbf{(2)}}\\
-\midrule
-educ                &       0.052***&       0.071***\\
-                    &     (0.003)   &     (0.004)   \\
-exper               &               &       0.034***\\
-                    &               &     (0.002)   \\
-black               &               &      -0.166***\\
-                    &               &     (0.017)   \\
-south               &               &      -0.132***\\
-                    &               &     (0.015)   \\
-married             &               &      -0.036***\\
-                    &               &     (0.004)   \\
-smsa                &               &       0.176***\\
-                    &               &     (0.015)   \\
-\midrule
-N                   &       3,010   &       3,003   \\
-Mean of dependent variable&        6.26   &        6.26   \\
-\bottomrule
+\begin{table}[!htbp] \centering
+  \caption{OLS estimates of effect of college on log wages}
+\begin{tabular}{@{\extracolsep{5pt}}lcc}
+\\[-1.8ex]\hline
+\hline \\[-1.8ex]
+& \multicolumn{2}{c}{\textit{Dependent variable: log(wage)}} \
+\cr \cline{2-3}
+\\[-1.8ex] & \multicolumn{1}{c}{No covariates} & \multicolumn{1}{c}{Covariates}  \\
+\\[-1.8ex] & (1) & (2) \\
+\hline \\[-1.8ex]
+ Intercept & 5.571$^{***}$ & 5.063$^{***}$ \\
+  & (0.039) & (0.066) \\
+ black & & -0.166$^{***}$ \\
+  & & (0.017) \\
+ educ & 0.052$^{***}$ & 0.071$^{***}$ \\
+  & (0.003) & (0.004) \\
+ exper & & 0.034$^{***}$ \\
+  & & (0.002) \\
+ married & & -0.036$^{***}$ \\
+  & & (0.004) \\
+ smsa & & 0.176$^{***}$ \\
+  & & (0.015) \\
+ south & & -0.132$^{***}$ \\
+  & & (0.015) \\
+\hline \\[-1.8ex]
+ Observations & 3,010 & 3,003 \\
+ $R^2$ & 0.099 & 0.305 \\
+ Adjusted $R^2$ & 0.098 & 0.304 \\
+ Residual Std. Error & 0.421(df = 3008) & 0.370(df = 2996)  \\
+ F Statistic & 320.487$^{***}$ (df = 1.0; 3008.0) & 230.191$^{***}$ (df = 6.0; 2996.0) \\
+\hline
+\hline \\[-1.8ex]
+\textit{Note:} & \multicolumn{2}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\
+ & \multicolumn{2}{r}\textit{Data is from NLS.  Heteroskedastic standard errors shown in parenthesis.} \\
 \end{tabular}
-\begin{tablenotes}
-\tiny
-\item Data is from NLS.  Heteroskedastic standard errors shown in parenthesis.  * p$<$0.10, ** p$<$0.05, *** p$<$0.01
-\end{tablenotes}
-\end{threeparttable}
-\end{center}
 \end{table}
