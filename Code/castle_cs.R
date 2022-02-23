@@ -4,10 +4,15 @@ library(ggplot2)
 #devtools::install_github("bcallaway11/did")
 library(did) # Callaway & Sant'Anna
 
+# First step: load the data in, call it castle.
 castle <- data.frame(read.dta13('https://github.com/scunning1975/mixtape/raw/master/castle.dta'))
+
+# Second step. The did package in R requires that the "never treated units" (we have 30)
+# be given a zero for their treatment date. In the castle dataset, if you are not treated
+# then you do not have a treatment date. Brant's did package REQUIRES never-treated be given a zero
+# for their treatment date. effyear is the treatment date variable.
+# This is just like in Stata: replace effyear=0 if effyear==.
 castle$effyear[is.na(castle$effyear)] <- 0 # untreated units have effective year of 0
-
-
 
 # Estimating the effect on log(homicide)
 atts <- att_gt(yname = "l_homicide", # LHS variable
