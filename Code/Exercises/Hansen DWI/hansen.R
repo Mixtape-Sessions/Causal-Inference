@@ -120,18 +120,18 @@ feols(
 
 
 rdrobust(
-  y = df$recidivism, x = df$bac1, c = 0.08, kernel = "tri", p = 2,
-  masspoints = "off"
-)
+  y = df$recidivism, x = df$bac1, c = 0.08, kernel = "tri",
+  p = 2, masspoints = "off"
+) |> 
+  summary()
 
 df_donut <- df[donut == FALSE,]
 
-profvis::profvis({
-  est <- rdrobust(
-    y = df_donut$recidivism, x = df_donut$bac1, c = 0.08, kernel = "tri", p = 2,
-    masspoints = "off"
-  )
-})
+est <- rdrobust(
+  y = df_donut$recidivism, x = df_donut$bac1, c = 0.08, kernel = "tri", 
+  p = 2, masspoints = "off"
+) |> 
+  summary()
 
 # Donut nonparameteric presentation
 df_summ <- df_donut[
