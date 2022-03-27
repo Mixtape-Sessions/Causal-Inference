@@ -1,0 +1,536 @@
+
+. 
+. * load the data from github
+. use https://github.com/scunning1975/causal-inference-class/raw/master/hansen_dwi, clear
+
+. 
+. * Q1: create some variables
+. gen     dui = 0
+
+. replace dui = 1 if bac1>=0.08 & bac1~=. // you got to put the ampersand bac1 not missing beca
+> use
+(191,548 real changes made)
+
+. * Stata thinks that if a missing value (.) exists for a variable (bac1) that it actually is L
+> ARGER
+. * than whatever threshold you specified (0.08). 
+. 
+. * Quadratic bac1
+. gen bac1_sq = bac1^2
+
+. 
+end of do-file
+
+. do "/var/folders/9d/_2mr739j3sz0szn1f4fsypss5n8_l0/T//SD21205.000000"
+
+. gen     donut = 0
+
+. replace donut = 1 if bac1>=0.079 & bac1<=0.081
+(1,882 real changes made)
+
+. 
+. reg recidivism white male aged acc dui##c.bac1 if bac1>=0.03 & bac1<=0.13 & donut==0, robust
+
+Linear regression                               Number of obs     =     88,085
+                                                F(7, 88077)       =      49.75
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.0036
+                                                Root MSE          =     .30835
+
+------------------------------------------------------------------------------
+             |               Robust
+  recidivism | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+       white |   .0163368   .0028301     5.77   0.000     .0107898    .0218838
+        male |   .0323997   .0023577    13.74   0.000     .0277785    .0370208
+        aged |  -.0008779   .0000856   -10.26   0.000    -.0010457   -.0007102
+         acc |   .0039893   .0034807     1.15   0.252    -.0028329    .0108115
+       1.dui |   -.055725   .0157812    -3.53   0.000    -.0866559    -.024794
+        bac1 |   .0199108   .2020923     0.10   0.922    -.3761882    .4160098
+             |
+  dui#c.bac1 |
+          1  |   .3757179   .2180423     1.72   0.085     -.051643    .8030788
+             |
+       _cons |   .1073351   .0137933     7.78   0.000     .0803004    .1343699
+------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/9d/_2mr739j3sz0szn1f4fsypss5n8_l0/T//SD21205.000000"
+
+. rdrobust recidivism bac1, kernel(epanechnikov) masspoints(off) p(2) c(0.08)
+
+Sharp RD estimates using local polynomial regression.
+
+    Cutoff c = .08 | Left of c  Right of c            Number of obs =     214558
+-------------------+----------------------            BW type       =      mserd
+     Number of obs |     23010      191548            Kernel        = Epanechnikov
+Eff. Number of obs |     15977       36424            VCE method    =         NN
+    Order est. (p) |         2           2
+    Order bias (q) |         3           3
+       BW est. (h) |     0.029       0.029
+       BW bias (b) |     0.042       0.042
+         rho (h/b) |     0.691       0.691
+
+Outcome: recidivism. Running variable: bac1.
+--------------------------------------------------------------------------------
+            Method |   Coef.    Std. Err.    z     P>|z|    [95% Conf. Interval]
+-------------------+------------------------------------------------------------
+      Conventional | -.01733     .00827   -2.0960  0.036   -.033537     -.001125
+            Robust |     -          -     -1.9178  0.055   -.036025      .000392
+--------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/9d/_2mr739j3sz0szn1f4fsypss5n8_l0/T//SD21205.000000"
+
+. rdrobust recidivism bac1 if donut==0, kernel(uniform) masspoints(off) p(2) c(0.08)
+
+Sharp RD estimates using local polynomial regression.
+
+    Cutoff c = .08 | Left of c  Right of c            Number of obs =     212676
+-------------------+----------------------            BW type       =      mserd
+     Number of obs |     21128      191548            Kernel        =    Uniform
+Eff. Number of obs |     13136       30466            VCE method    =         NN
+    Order est. (p) |         2           2
+    Order bias (q) |         3           3
+       BW est. (h) |     0.024       0.024
+       BW bias (b) |     0.050       0.050
+         rho (h/b) |     0.489       0.489
+
+Outcome: recidivism. Running variable: bac1.
+--------------------------------------------------------------------------------
+            Method |   Coef.    Std. Err.    z     P>|z|    [95% Conf. Interval]
+-------------------+------------------------------------------------------------
+      Conventional | -.01648     .01132   -1.4561  0.145   -.038658      .005702
+            Robust |     -          -     -1.5273  0.127   -.042362      .005255
+--------------------------------------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/9d/_2mr739j3sz0szn1f4fsypss5n8_l0/T//SD21205.000000"
+
+. cmogram recidivism bac1 if bac1>0.055 & bac1<0.105 & donut==0, cut(0.08) scatter line(0.08) l
+> fitci
+
+Plotting mean of recidivism, conditional on bac1.
+
+n = 45075
+
+Bin #1: [.0560000017285347,.0565365870914808] (n = 291) (mean = .0996563573883162)
+Bin #2: (.0565365870914808,.0570731724544269] (n = 285) (mean = .1298245614035088)
+Bin #3: (.0570731724544269,.057609757817373] (n = 0) (mean = .)
+Bin #4: (.057609757817373,.0581463431803191] (n = 310) (mean = .1032258064516129)
+Bin #5: (.0581463431803191,.0586829285432652] (n = 0) (mean = .)
+Bin #6: (.0586829285432652,.0592195139062113] (n = 338) (mean = .1124260355029586)
+Bin #7: (.0592195139062113,.0597560992691574] (n = 0) (mean = .)
+Bin #8: (.0597560992691574,.0602926846321035] (n = 386) (mean = .116580310880829)
+Bin #9: (.0602926846321035,.0608292699950496] (n = 0) (mean = .)
+Bin #10: (.0608292699950496,.0613658553579957] (n = 400) (mean = .1375)
+Bin #11: (.0613658553579957,.0619024407209418] (n = 0) (mean = .)
+Bin #12: (.0619024407209418,.0624390260838879] (n = 415) (mean = .1325301204819277)
+Bin #13: (.0624390260838879,.062975611446834] (n = 0) (mean = .)
+Bin #14: (.062975611446834,.0635121968097801] (n = 493) (mean = .101419878296146)
+Bin #15: (.0635121968097801,.0640487821727262] (n = 472) (mean = .1059322033898305)
+Bin #16: (.0640487821727262,.0645853675356723] (n = 0) (mean = .)
+Bin #17: (.0645853675356723,.0651219528986184] (n = 463) (mean = .1274298056155508)
+Bin #18: (.0651219528986184,.0656585382615645] (n = 0) (mean = .)
+Bin #19: (.0656585382615645,.0661951236245106] (n = 508) (mean = .1181102362204724)
+Bin #20: (.0661951236245106,.0667317089874567] (n = 0) (mean = .)
+Bin #21: (.0667317089874567,.0672682943504028] (n = 538) (mean = .1468401486988848)
+Bin #22: (.0672682943504028,.0678048797133489] (n = 0) (mean = .)
+Bin #23: (.0678048797133489,.068341465076295] (n = 586) (mean = .1040955631399317)
+Bin #24: (.068341465076295,.0688780504392411] (n = 0) (mean = .)
+Bin #25: (.0688780504392411,.0694146358021872] (n = 638) (mean = .1253918495297806)
+Bin #26: (.0694146358021872,.0699512211651333] (n = 0) (mean = .)
+Bin #27: (.0699512211651333,.0704878065280794] (n = 638) (mean = .109717868338558)
+Bin #28: (.0704878065280794,.0710243918910255] (n = 689) (mean = .1132075471698113)
+Bin #29: (.0710243918910255,.0715609772539716] (n = 0) (mean = .)
+Bin #30: (.0715609772539716,.0720975626169177] (n = 732) (mean = .116120218579235)
+Bin #31: (.0720975626169177,.0726341479798638] (n = 0) (mean = .)
+Bin #32: (.0726341479798638,.0731707333428099] (n = 782) (mean = .1240409207161125)
+Bin #33: (.0731707333428099,.073707318705756] (n = 0) (mean = .)
+Bin #34: (.073707318705756,.0742439040687021] (n = 752) (mean = .1077127659574468)
+Bin #35: (.0742439040687021,.0747804894316482] (n = 0) (mean = .)
+Bin #36: (.0747804894316482,.0753170747945943] (n = 839) (mean = .1060786650774732)
+Bin #37: (.0753170747945943,.0758536601575404] (n = 0) (mean = .)
+Bin #38: (.0758536601575404,.0763902455204865] (n = 822) (mean = .1240875912408759)
+Bin #39: (.0763902455204865,.0769268308834326] (n = 0) (mean = .)
+Bin #40: (.0769268308834326,.0774634162463787] (n = 855) (mean = .1169590643274854)
+Bin #41: (.0774634162463787,.0780000016093254] (n = 0) (mean = .)
+Bin #1: [.08,.0805555554827054] (n = 0) (mean = .)
+Bin #2: (.0805555554827054,.0811111109654108] (n = 979) (mean = .0990806945863126)
+Bin #3: (.0811111109654108,.0816666664481162] (n = 0) (mean = .)
+Bin #4: (.0816666664481162,.0822222219308216] (n = 1099) (mean = .097361237488626)
+Bin #5: (.0822222219308216,.082777777413527] (n = 0) (mean = .)
+Bin #6: (.082777777413527,.0833333328962324] (n = 1110) (mean = .0945945945945946)
+Bin #7: (.0833333328962324,.0838888883789378] (n = 0) (mean = .)
+Bin #8: (.0838888883789378,.0844444438616432] (n = 1024) (mean = .1005859375)
+Bin #9: (.0844444438616432,.0849999993443486] (n = 0) (mean = .)
+Bin #10: (.0849999993443486,.085555554827054] (n = 1053) (mean = .1016144349477683)
+Bin #11: (.085555554827054,.0861111103097594] (n = 1084) (mean = .0839483394833948)
+Bin #12: (.0861111103097594,.0866666657924648] (n = 0) (mean = .)
+Bin #13: (.0866666657924648,.0872222212751702] (n = 1167) (mean = .1036846615252785)
+Bin #14: (.0872222212751702,.0877777767578756] (n = 0) (mean = .)
+Bin #15: (.0877777767578756,.088333332240581] (n = 1216) (mean = .0912828947368421)
+Bin #16: (.088333332240581,.0888888877232864] (n = 0) (mean = .)
+Bin #17: (.0888888877232864,.0894444432059918] (n = 1270) (mean = .1)
+Bin #18: (.0894444432059918,.0899999986886972] (n = 0) (mean = .)
+Bin #19: (.0899999986886972,.0905555541714026] (n = 1257) (mean = .0986475735879077)
+Bin #20: (.0905555541714026,.091111109654108] (n = 1206) (mean = .0945273631840796)
+Bin #21: (.091111109654108,.0916666651368134] (n = 0) (mean = .)
+Bin #22: (.0916666651368134,.0922222206195188] (n = 1265) (mean = .0996047430830039)
+Bin #23: (.0922222206195188,.0927777761022242] (n = 0) (mean = .)
+Bin #24: (.0927777761022242,.0933333315849296] (n = 1325) (mean = .100377358490566)
+Bin #25: (.0933333315849296,.093888887067635] (n = 0) (mean = .)
+Bin #26: (.093888887067635,.0944444425503404] (n = 1297) (mean = .1079414032382421)
+Bin #27: (.0944444425503404,.0949999980330458] (n = 0) (mean = .)
+Bin #28: (.0949999980330458,.0955555535157512] (n = 1324) (mean = .1004531722054381)
+Bin #29: (.0955555535157512,.0961111089984566] (n = 1327) (mean = .0972117558402412)
+Bin #30: (.0961111089984566,.096666664481162] (n = 0) (mean = .)
+Bin #31: (.096666664481162,.0972222199638674] (n = 1325) (mean = .0867924528301887)
+Bin #32: (.0972222199638674,.0977777754465728] (n = 0) (mean = .)
+Bin #33: (.0977777754465728,.0983333309292782] (n = 1400) (mean = .1057142857142857)
+Bin #34: (.0983333309292782,.0988888864119836] (n = 0) (mean = .)
+Bin #35: (.0988888864119836,.099444441894689] (n = 1439) (mean = .1021542738012509)
+Bin #36: (.099444441894689,.0999999973773944] (n = 0) (mean = .)
+Bin #37: (.0999999973773944,.1005555528600998] (n = 1388) (mean = .0965417867435159)
+Bin #38: (.1005555528600998,.1011111083428052] (n = 1466) (mean = .1084583901773533)
+Bin #39: (.1011111083428052,.1016666638255106] (n = 0) (mean = .)
+Bin #40: (.1016666638255106,.102222219308216] (n = 1446) (mean = .1037344398340249)
+Bin #41: (.102222219308216,.1027777747909214] (n = 0) (mean = .)
+Bin #42: (.1027777747909214,.1033333302736268] (n = 1479) (mean = .1041244083840433)
+Bin #43: (.1033333302736268,.1038888857563322] (n = 0) (mean = .)
+Bin #44: (.1038888857563322,.1044444412390376] (n = 1520) (mean = .1006578947368421)
+Bin #45: (.1044444412390376,.1049999967217445] (n = 0) (mean = .)
+
+. 
+end of do-file
+
+. do "/var/folders/9d/_2mr739j3sz0szn1f4fsypss5n8_l0/T//SD21205.000000"
+
+. rdplot recidivism bac1 if bac1>=0.03 & bac1<=0.13, p(4) masspoints(off) c(0.08) graph_options
+> (title(RD Plot Recidivism and BAC))
+
+RD Plot with evenly spaced mimicking variance number of bins using spacings estimators.
+
+       Cutoff c = .08 | Left of c  Right of c        Number of obs  =      89967
+----------------------+----------------------        Kernel         =    Uniform
+        Number of obs |     18892       71075
+   Eff. Number of obs |     18892       71075
+  Order poly. fit (p) |         4           4
+     BW poly. fit (h) |     0.049       0.050
+ Number of bins scale |     1.000       1.000
+
+Outcome: recidivism. Running variable: bac1.
+---------------------------------------------
+                      | Left of c  Right of c
+----------------------+----------------------
+        Bins selected |       637         808
+   Average bin length |     0.000       0.000
+    Median bin length |     0.000       0.000
+----------------------+----------------------
+    IMSE-optimal bins |         6           5
+  Mimicking Var. bins |       637         808
+----------------------+----------------------
+Rel. to IMSE-optimal: | 
+        Implied scale |   106.167     161.600
+    WIMSE var. weight |     0.000       0.000
+    WIMSE bias weight |     1.000       1.000
+---------------------------------------------
+
+
+. 
+end of do-file
+
+. do "/var/folders/9d/_2mr739j3sz0szn1f4fsypss5n8_l0/T//SD21205.000000"
+
+. rdplot recidivism bac1 if bac1>=0.03 & bac1<=0.13, p(2) masspoints(off) c(0.08) graph_options
+> (title(RD Plot Recidivism and BAC))
+
+RD Plot with evenly spaced mimicking variance number of bins using spacings estimators.
+
+       Cutoff c = .08 | Left of c  Right of c        Number of obs  =      89967
+----------------------+----------------------        Kernel         =    Uniform
+        Number of obs |     18892       71075
+   Eff. Number of obs |     18892       71075
+  Order poly. fit (p) |         2           2
+     BW poly. fit (h) |     0.049       0.050
+ Number of bins scale |     1.000       1.000
+
+Outcome: recidivism. Running variable: bac1.
+---------------------------------------------
+                      | Left of c  Right of c
+----------------------+----------------------
+        Bins selected |       637         808
+   Average bin length |     0.000       0.000
+    Median bin length |     0.000       0.000
+----------------------+----------------------
+    IMSE-optimal bins |         6           5
+  Mimicking Var. bins |       637         808
+----------------------+----------------------
+Rel. to IMSE-optimal: | 
+        Implied scale |   106.167     161.600
+    WIMSE var. weight |     0.000       0.000
+    WIMSE bias weight |     1.000       1.000
+---------------------------------------------
+
+
+. 
+end of do-file
+
+. do "/var/folders/9d/_2mr739j3sz0szn1f4fsypss5n8_l0/T//SD21205.000000"
+
+. rddensity bac1, c(0.5) plot
+c() should be set within the range of bac1.
+r(125);
+
+end of do-file
+
+r(125);
+
+. do "/var/folders/9d/_2mr739j3sz0szn1f4fsypss5n8_l0/T//SD21205.000000"
+
+. rddensity bac1, c(0.08) plot
+Computing data-driven bandwidth selectors.
+
+Point estimates and standard errors have been adjusted for repeated observations.
+(Use option nomasspoints to suppress this adjustment.)
+
+RD Manipulation test using local polynomial density estimation.
+
+     c =     0.080 | Left of c  Right of c          Number of obs =       214558
+-------------------+----------------------          Model         = unrestricted
+     Number of obs |     23010      191548          BW method     =         comb
+Eff. Number of obs |     14727       28946          Kernel        =   triangular
+    Order est. (p) |         2           2          VCE method    =    jackknife
+    Order bias (q) |         3           3
+       BW est. (h) |     0.023       0.023
+
+Running variable: bac1.
+------------------------------------------
+            Method |      T          P>|T|
+-------------------+----------------------
+            Robust |   -0.1387      0.8897
+------------------------------------------
+
+P-values of binomial tests. (H0: prob = .5)
+-----------------------------------------------------
+ Window Length / 2 |       <c         >=c |     P>|T|
+-------------------+----------------------+----------
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+-----------------------------------------------------
+
+. 
+end of do-file
+
+. help rddensity
+
+. do "/var/folders/9d/_2mr739j3sz0szn1f4fsypss5n8_l0/T//SD21205.000000"
+
+. rddensity bac1, c(0.08) plot h(0.001 0.01)
+
+Point estimates and standard errors have been adjusted for repeated observations.
+(Use option nomasspoints to suppress this adjustment.)
+
+RD Manipulation test using local polynomial density estimation.
+
+     c =     0.080 | Left of c  Right of c          Number of obs =       214558
+-------------------+----------------------          Model         = unrestricted
+     Number of obs |     23010      191548          BW method     =       manual
+Eff. Number of obs |      1882       10002          Kernel        =   triangular
+    Order est. (p) |         2           2          VCE method    =    jackknife
+    Order bias (q) |         3           3
+       BW est. (h) |     0.001       0.010
+
+Running variable: bac1.
+------------------------------------------
+            Method |      T          P>|T|
+-------------------+----------------------
+            Robust |    4.6299      0.0000
+------------------------------------------
+
+P-values of binomial tests. (H0: prob = .5)
+-----------------------------------------------------
+ Window Length / 2 |       <c         >=c |     P>|T|
+-------------------+----------------------+----------
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+-----------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/9d/_2mr739j3sz0szn1f4fsypss5n8_l0/T//SD21205.000000"
+
+. rddensity bac1, c(0.08) plot h(0.001 0.001)
+Not enough observations on the right to perform calculations.
+--Break--
+r(1);
+
+end of do-file
+
+--Break--
+r(1);
+
+. do "/var/folders/9d/_2mr739j3sz0szn1f4fsypss5n8_l0/T//SD21205.000000"
+
+. rddensity bac1, c(0.08) plot h(0.005 0.005)
+
+Point estimates and standard errors have been adjusted for repeated observations.
+(Use option nomasspoints to suppress this adjustment.)
+
+RD Manipulation test using local polynomial density estimation.
+
+     c =     0.080 | Left of c  Right of c          Number of obs =       214558
+-------------------+----------------------          Model         = unrestricted
+     Number of obs |     23010      191548          BW method     =       manual
+Eff. Number of obs |      5302        4212          Kernel        =   triangular
+    Order est. (p) |         2           2          VCE method    =    jackknife
+    Order bias (q) |         3           3
+       BW est. (h) |     0.005       0.005
+
+Running variable: bac1.
+------------------------------------------
+            Method |      T          P>|T|
+-------------------+----------------------
+            Robust |    0.1298      0.8967
+------------------------------------------
+
+P-values of binomial tests. (H0: prob = .5)
+-----------------------------------------------------
+ Window Length / 2 |       <c         >=c |     P>|T|
+-------------------+----------------------+----------
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+-----------------------------------------------------
+
+. 
+end of do-file
+
+. do "/var/folders/9d/_2mr739j3sz0szn1f4fsypss5n8_l0/T//SD21205.000000"
+
+. rddensity bac1, c(0.08) plot
+Computing data-driven bandwidth selectors.
+
+Point estimates and standard errors have been adjusted for repeated observations.
+(Use option nomasspoints to suppress this adjustment.)
+
+RD Manipulation test using local polynomial density estimation.
+
+     c =     0.080 | Left of c  Right of c          Number of obs =       214558
+-------------------+----------------------          Model         = unrestricted
+     Number of obs |     23010      191548          BW method     =         comb
+Eff. Number of obs |     14727       28946          Kernel        =   triangular
+    Order est. (p) |         2           2          VCE method    =    jackknife
+    Order bias (q) |         3           3
+       BW est. (h) |     0.023       0.023
+
+Running variable: bac1.
+------------------------------------------
+            Method |      T          P>|T|
+-------------------+----------------------
+            Robust |   -0.1387      0.8897
+------------------------------------------
+
+P-values of binomial tests. (H0: prob = .5)
+-----------------------------------------------------
+ Window Length / 2 |       <c         >=c |     P>|T|
+-------------------+----------------------+----------
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+             0.000 |      909           0 |    0.0000
+-----------------------------------------------------
+
+. 
+end of do-file
+
+. ta bac1 if bac1 >=0.07 & bac1<=0.09
+
+       bac1 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+        .07 |        638        3.38        3.38
+       .071 |        689        3.65        7.02
+       .072 |        732        3.87       10.90
+       .073 |        782        4.14       15.03
+       .074 |        752        3.98       19.01
+       .075 |        839        4.44       23.45
+       .076 |        822        4.35       27.80
+       .077 |        855        4.52       32.33
+       .078 |        904        4.78       37.11
+       .079 |        973        5.15       42.26
+        .08 |        909        4.81       47.07
+       .081 |        979        5.18       52.25
+       .082 |      1,099        5.82       58.07
+       .083 |      1,110        5.87       63.94
+       .084 |      1,024        5.42       69.36
+       .085 |      1,053        5.57       74.93
+       .086 |      1,084        5.74       80.67
+       .087 |      1,167        6.18       86.84
+       .088 |      1,216        6.43       93.28
+       .089 |      1,270        6.72      100.00
+------------+-----------------------------------
+      Total |     18,897      100.00
+
+. histogram bac1 if bac1>=0.07 & bac1<=0.088, bin(20) frequency ytitle(Counts) xtitle(Blood alc
+> ohol content) xline(0.08) title(Histogram of the distribution of counts by bac1)
+(bin=20, start=.07, width=.0009)
+
+. histogram bac1 if bac1>=0.07 & bac1<=0.088, bin(100) frequency ytitle(Counts) xtitle(Blood al
+> cohol content) xline(0.08) title(Histogram of the distribution of counts by bac1)
+(bin=100, start=.07, width=.00018)
+
+. histogram bac1, bin(250) frequency ytitle(Counts) xtitle(Blood alcohol content) xline(0.08) t
+> itle(Histogram of the distribution of counts by bac1)
+(bin=250, start=0, width=.001796)
+
+. help mode
+
+. do "/var/folders/9d/_2mr739j3sz0szn1f4fsypss5n8_l0/T//SD21205.000000"
+
+.                                 cap n test `ivs'
+last estimates not found
+
+. 
+end of do-file
+
+. do "/Users/scott_cunningham/Documents/Causal-Inference/Automation/iv.do"
+
+. clear
+
+. capture log close
