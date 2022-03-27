@@ -10,6 +10,9 @@ clear
 cd "/Users/scott_cunningham/Dropbox/CI Workshop/Assignments/Hansen"
 capture log using ./hansen.log, replace
 
+* ssc install gtools
+* net install binscatter2, from("https://raw.githubusercontent.com/mdroste/stata-binscatter2/master/")
+
 * load the data from github
 use https://github.com/scunning1975/causal-inference-class/raw/master/hansen_dwi, clear
 
@@ -80,8 +83,29 @@ rdrobust recidivism bac1 if donut==0, kernel(uniform) masspoints(off) p(2) c(0.0
 * Donut nonparameteric presentation
 cmogram recidivism bac1 if bac1>0.055 & bac1<0.105 & donut==0, cut(0.08) scatter line(0.08) lfitci
 
+* scatter
+twoway (scatter recidivism bac1, sort) if bac1>0.03 & bac1<0.13, ytitle(Recidivism) xtitle(Blood alcohol content) xline(0.08) title(Recidivism across blood alcohol content) note(Cutoff is 0.08 BAC)
+
+* binscatter
+binscatter recidivism bac1 if bac1>0.03 & bac1<0.13
+
+binscatter recidivism bac1 if bac1>0.03 & bac1<0.13, line(qfit) by(dui)
+
+
 * rdplot
 rdplot recidivism bac1 if bac1>=0.03 & bac1<=0.13, p(4) masspoints(off) c(0.08) graph_options(title(RD Plot Recidivism and BAC))
+
+rdplot recidivism bac1 if bac1>=0.03 & bac1<=0.13, binselect(qs) p(4) masspoints(off) c(0.08) graph_options(title(RD Plot Recidivism and BAC))
+
+
+** Local polynomial regressions extension with rdrobust
+rdbwselect recidivism bac1, kernel(triangular) p(1) bwselect(mserd) c(0.08) // mserd imposes same bandwidth h on each side of the cutoff which is why left and right of c both have bw of 0.031
+
+rdbwselect recidivism bac1 , kernel(triangular) p(1) bwselect(msetwo) c(0.08) // msetwo leads to a bandwidth of 0.033 on th control side and 0.054 on the treatment side
+
+rdrobust recidivism bac1, kernel(triangular) masspoints(off) p(2) c(0.08) bwselect(mserd) // again mserd imposed same bandwidth h on each side of the cutoff of 0.032 and gives us an estimate of 1.7pp reduction in recidivism at the cutoff
+
+rdrobust recidivism bac1, kernel(triangular) masspoints(off) p(2) c(0.08) bwselect(msetwo) // again msetwo allowed the bandwidth to be 0.039 on the left of the cutoff and 0.142 to the right, giving us a point estimat of 2.0pp reduction in recidivism at the cutoff
 
 
 
