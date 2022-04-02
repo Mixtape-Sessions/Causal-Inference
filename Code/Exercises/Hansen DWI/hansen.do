@@ -12,6 +12,8 @@ capture log using ./hansen.log, replace
 
 * ssc install gtools
 * net install binscatter2, from("https://raw.githubusercontent.com/mdroste/stata-binscatter2/master/")
+* ssc install rdrobust
+* ssc install cmogram
 
 * load the data from github
 use https://github.com/scunning1975/causal-inference-class/raw/master/hansen_dwi, clear

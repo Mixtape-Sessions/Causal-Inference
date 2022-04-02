@@ -25,6 +25,7 @@ reg score lagdemocrat, cluster(id)
 reg score democrat, cluster(id)
 reg democrat lagdemocrat, cluster(id)
 
+
 * Re-center the running variable (voteshare) controlling for the running variable (but not interacting it)
 gen demvoteshare_c = demvoteshare - 0.5
 gen lagdemvoteshare_c = lagdemvoteshare - 0.5
