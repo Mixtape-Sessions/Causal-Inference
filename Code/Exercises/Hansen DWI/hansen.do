@@ -12,102 +12,83 @@ capture log using ./hansen.log, replace
 
 * ssc install gtools
 * net install binscatter2, from("https://raw.githubusercontent.com/mdroste/stata-binscatter2/master/")
-* ssc install rdrobust
 * ssc install cmogram
+* lpdensity, from(https://raw.githubusercontent.com/nppackages/lpdensity/master/stata) replace
+* Load the raw data into memory
+* net install rdrobust, from(https://raw.githubusercontent.com/rdpackages/rdrobust/master/stata) replace
+* ssc install rdrobust, replace
+* net install rddensity, from(https://raw.githubusercontent.com/rdpackages/rddensity/master/stata) replace
+* net install lpdensity, from(https://sites.google.com/site/nppackages/lpdensity/stata) replace
 
 * load the data from github
 use https://github.com/scunning1975/causal-inference-class/raw/master/hansen_dwi, clear
 
-* Q1: create some variables
-gen 	dui = 0
-replace dui = 1 if bac1>=0.08 & bac1~=. // you got to put the ampersand bac1 not missing because
-* Stata thinks that if a missing value (.) exists for a variable (bac1) that it actually is LARGER
-* than whatever threshold you specified (0.08). 
+* Re-center our running variable at bac1=0.08
+ren bac1 bac1_old
+gen bac1=bac1_old-0.08
 
-* Quadratic bac1
-gen bac1_sq = bac1^2
+* Q1a: create some treatment variable for bac1>=0.08
+gen dui = 0
+replace dui = 1 if bac1>=0.08 & bac1~=. // Stata when it sees a period (missing) in a variableit 
+// thinks that that observation is equal to positive infinity. And so since positive infinity
+// is greater than 0.08, it will assign dui = 1 for that missing value which can create
+// major problems. 
 
-* Find evidence for manipulation or HEAPING
+* Q1b: Find evidence for manipulation or HEAPING using histograms
+histogram bac1, discrete width(0.001) ytitle(Density) xtitle(Running variable (blood alcohol content)) xline(0.08) title(Density of observations across the running variable)
 
-* Once, make it as a discrete variable (bac1), once as continuous (bac1).
-histogram bac1, discrete width(0.001) ytitle(Frequency) xtitle(Blood Alcohol Content) xline(0.08) title(Replicating Figure 1 of Hansen AER 2015) subtitle(Density of stops for DUI across BAC) note(Discrete histogram)
-
-* Second, make it as a continuous variable -- looks like there is heaping that is visible
-histogram bac1, width(0.001) ytitle(Frequency) xtitle(Blood Alcohol Content) xline(0.08) title(Replicating Figure 1 of Hansen AER 2015) subtitle(Density of stops for DUI across BAC) note(Continuous histogram)
-
-* Third, use rddensity from Cattnaeo, Titunik and Farrell papers
-* Syntax: rddensity running_variable, c(cutoff) plot
+* use the Cattaneo, et al. -rddensity-
 rddensity bac1, c(0.08) plot
 
-* Q2: Running regressions on covariates (white, male, age and accident) to see if there is a 
-* jump in average values for each of these  at the cutoff.
-
+* Q2: Table 2 on white, male, aged, and acc
 * yi = Xi′γ + α1DUIi + α2BACi + α3BACi × DUIi + ui
+* Are the covariates balanced at the cutoff? Use two separate bandwidths (0.03 to 0.13; 0.055 to 0.105) 
 
+reg white dui##c.bac1 if bac1>=0.03 & bac1<=0.13, robust
+reg male dui##c.bac1 if bac1>=0.03 & bac1<=0.13, robust
+reg acc dui##c.bac1 if bac1>=0.03 & bac1<=0.13, robust
+reg aged dui##c.bac1 if bac1>=0.03 & bac1<=0.13, robust
 
-reg white dui##c.bac1 if bac1>=0.03 & bac1<=0.13, robust //not going to cluster on the running
-* variable because of Kolesar and Rothe (2018) AER that says clustering on the running variable
-* has an extremely over-rejection problem. Technically they recommend honest confidence intervals
-* but that's in R and I'm not going to do it.
-reg male dui##c.bac1 if bac1>=0.03 & bac1<=0.13, robust //not going to cluster on the running
-reg acc dui##c.bac1 if bac1>=0.03 & bac1<=0.13, robust //not going to cluster on the running
-reg aged dui##c.(bac1 bac if bac1>=0.03 & bac1<=0.13, robust //not going to cluster on the running
-
-
-* Q4: Our main results. regression of recidivism onto the equation (1) model. 
-reg recidivism white male aged acc dui##c.bac1 if bac1>=0.03 & bac1<=0.13, robust
-reg recidivism white male aged acc dui##c.(bac1 bac1_sq) if bac1>=0.03 & bac1<=0.13, robust
-
-* Slightly smaller bandwidth of 0.055 to 0.105
-reg recidivism white male aged acc dui##c.bac1 if bac1>=0.055 & bac1<=0.105, robust
-reg recidivism white male aged acc dui##c.(bac1 bac1_sq) if bac1>=0.055 & bac1<=0.105, robust
-
-
-
-cmogram recidivism bac1 if bac1>0.03 & bac1<0.13, cut(0.08) scatter line(0.08) 
-cmogram recidivism bac1 if bac1>0.03 & bac1<0.13, cut(0.08) scatter line(0.08) lfitci
-cmogram recidivism bac1 if bac1>0.03 & bac1<0.13, cut(0.08) scatter line(0.08) qfitci
-cmogram recidivism bac1 if bac1>0.03 & bac1<0.13, cut(0.08) scatter line(0.08) lowess
-
-* REMEMBER THOUGH: HEAPING. Replicate Q4 myself by running "donut hole regressions". How do I run a
-* donut hole regression? I simply drop the units at the cutoff. 
-
-gen 	donut = 0
-replace donut = 1 if bac1>=0.079 & bac1<=0.081
-
-reg recidivism white male aged acc dui##c.bac1 if bac1>=0.03 & bac1<=0.13 & donut==0, robust
-
-
-* Local polynomial regressions with triangular kernel and bias correction
-rdrobust recidivism bac1, kernel(epanechnikov) masspoints(off) p(2) c(0.08)
-rdrobust recidivism bac1 if donut==0, kernel(uniform) masspoints(off) p(2) c(0.08)
-
-* Donut nonparameteric presentation
-cmogram recidivism bac1 if bac1>0.055 & bac1<0.105 & donut==0, cut(0.08) scatter line(0.08) lfitci
+* Q3: Create Figure 2 panel A-D using cmogram on our covariates (white, male, age, acc)
+* cmogram outcome running variable, cut(cutoff) scatter line(cutoff) polynomial
+cmogram white bac1, cut(0.08) scatter line(0.08)
+cmogram white bac1, cut(0.08) scatter line(0.08) lfitci
+cmogram white bac1, cut(0.08) scatter line(0.08) qfitci
 
 * scatter
-twoway (scatter recidivism bac1, sort) if bac1>0.03 & bac1<0.13, ytitle(Recidivism) xtitle(Blood alcohol content) xline(0.08) title(Recidivism across blood alcohol content) note(Cutoff is 0.08 BAC)
+twoway (scatter white bac1, sort) if bac1>=0.03 & bac1<=0.13, ytitle(White means) xtitle(Blood alcohol content running variable) xline(0.08) title(Covariate test on whites) note(Cutoff is at blood alcohol content of 0.08)
 
 * binscatter
-binscatter recidivism bac1 if bac1>0.03 & bac1<0.13
+binscatter white bac1 if bac1>=0.03 & bac1<=0.13
+binscatter white bac1 if bac1>=0.03 & bac1<=0.13, by(dui)
+binscatter white bac1 if bac1>=0.03 & bac1<=0.13, by(dui) line(qfit)
 
-binscatter recidivism bac1 if bac1>0.03 & bac1<0.13, line(qfit) by(dui)
+* Q4a: Our main results. regression of recidivism onto the equation (1) model with linear bac1. 
+reg recidivism dui bac1 if bac1>=0.03 & bac1<=0.13, robust
 
+* Q4b: Our main results. regression of recidivism onto the equation (1) model with interacted linear bac1. 
+reg recidivism dui##c.bac1 if bac1>=0.03 & bac1<=0.13, robust
 
-* rdplot
-rdplot recidivism bac1 if bac1>=0.03 & bac1<=0.13, p(4) masspoints(off) c(0.08) graph_options(title(RD Plot Recidivism and BAC))
+* Q4c: Our main results. regression of recidivism onto the equation (1) model with interacted linear and quadratic bac1. 
+gen bac1_squared = bac1^2
+reg recidivism dui##c.(bac1 bac1_squared) if bac1>=0.03 & bac1<=0.13, robust
 
-rdplot recidivism bac1 if bac1>=0.03 & bac1<=0.13, binselect(qs) p(4) masspoints(off) c(0.08) graph_options(title(RD Plot Recidivism and BAC))
+* Q5: "donut hole" dropping close to 0.08 (we'll discuss why later)
 
+* Q6: Figure 3 using less than 0.15 bac on the bac1
+cmogram recidivism bac1, cut(0.08) scatter line(0.08) lfitci
+cmogram recidivism bac1 if bac1>=0.03 & bac1<=0.13, cut(0.08) scatter line(0.08) lfitci
+cmogram recidivism bac1 if bac1>=0.03 & bac1<=0.13, cut(0.08) scatter line(0.08) qfitci
 
-** Local polynomial regressions extension with rdrobust
-rdbwselect recidivism bac1, kernel(triangular) p(1) bwselect(mserd) c(0.08) // mserd imposes same bandwidth h on each side of the cutoff which is why left and right of c both have bw of 0.031
+binscatter recidivism bac1 if bac1>=0.03 & bac1<=0.13, by(dui)
+binscatter recidivism bac1 if bac1>=0.03 & bac1<=0.13, by(dui) line(qfit)
 
-rdbwselect recidivism bac1 , kernel(triangular) p(1) bwselect(msetwo) c(0.08) // msetwo leads to a bandwidth of 0.033 on th control side and 0.054 on the treatment side
+* Q7: Local polynomial regressions with (default) triangular kernel and bias correction
+rdrobust recidivism bac1, p(1) c(0.08)
+rdrobust recidivism bac1, p(1) c(0.08) kernel(uniform)
+rdrobust recidivism bac1, p(1) c(0.08) kernel(epanechnikov)
 
-rdrobust recidivism bac1, kernel(triangular) masspoints(off) p(2) c(0.08) bwselect(mserd) // again mserd imposed same bandwidth h on each side of the cutoff of 0.032 and gives us an estimate of 1.7pp reduction in recidivism at the cutoff
-
-rdrobust recidivism bac1, kernel(triangular) masspoints(off) p(2) c(0.08) bwselect(msetwo) // again msetwo allowed the bandwidth to be 0.039 on the left of the cutoff and 0.142 to the right, giving us a point estimat of 2.0pp reduction in recidivism at the cutoff
-
-
-
+* Higher order polynomials
+rdrobust recidivism bac1, p(2) c(0.08)
+rdrobust recidivism bac1, p(3) c(0.08)
+rdrobust recidivism bac1, p(4) c(0.08)
