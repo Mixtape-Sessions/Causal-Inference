@@ -56,7 +56,7 @@ cmogram white bac1, cut(0.0) scatter line(0.0) lfitci
 cmogram white bac1, cut(0.0) scatter line(0.0) qfitci
 
 * scatter
-twoway (scatter white bac1, sort) if bac1_old>=0.03 & bac1_old<=0.13, ytitle(White means) xtitle(Blood alcohol content running variable) xline(0.08) title(Covariate test on whites) note(Cutoff is at blood alcohol content of 0.08)
+twoway (scatter white bac1  if bac1_old>=0.03 & bac1_old<=0.13, sort) if bac1_old>=0.03 & bac1_old<=0.13, ytitle(White means) xtitle(Blood alcohol content running variable) xline(0.08) title(Covariate test on whites) note(Cutoff is at blood alcohol content of 0.08)
 
 * binscatter
 binscatter white bac1 if bac1_old>=0.03 & bac1_old<=0.13
@@ -74,6 +74,11 @@ gen bac1_squared = bac1^2
 reg recidivism dui##c.(bac1 bac1_squared) if bac1_old>=0.03 & bac1_old<=0.13, robust
 
 * Q5: "donut hole" dropping close to 0.08 (we'll discuss why later)
+preserve
+drop if bac1_old>=0.079 & bac1_old<=0.081
+reg recidivism dui##c.(bac1) if bac1_old>=0.03 & bac1_old<=0.13, robust
+rdrobust recidivism bac1, c(0.0) p(1) bwselect(msetwo) all
+restore
 
 * Q6: Figure 3 using less than 0.15 bac on the bac1
 cmogram recidivism bac1, cut(0.0) scatter line(0.0) lfitci
@@ -92,3 +97,10 @@ rdrobust recidivism bac1, p(1) c(0.0) kernel(epanechnikov)
 rdrobust recidivism bac1, p(2) c(0.0)
 rdrobust recidivism bac1, p(3) c(0.0)
 rdrobust recidivism bac1, p(4) c(0.0)
+
+* RD PLOT
+rdplot recidivism bac1 if bac1_old>=0.03 & bac1_old<=0.13, p(0) masspoints(off) c(0.0) graph_options(title(Recidivism for BAC of 0.08))
+rdplot recidivism bac1 if bac1_old>=0.03 & bac1_old<=0.13, p(2) masspoints(off) c(0.0) graph_options(title(Recidivism for BAC of 0.08))
+
+* McCrary density test: remember it's a density test *on the running variable* (lagdemvoteshare)
+rddensity bac1, c(0.0) plot
