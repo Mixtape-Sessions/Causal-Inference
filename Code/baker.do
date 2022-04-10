@@ -101,6 +101,10 @@ gen y2 = firms + n + te*treat + e // parallel trends IN EVERY PERIOD.
 * Data generating process with heterogeneity over time
 gen y = firms + n + treat*te*(year - treat_date + 1) + e 
 
+* Data generating process for parallel trends
+gen y0 = firms + n + e 
+
+
 * For group 1, the ATT in 1986 is 10
 * For group 1, the ATT in 1987 is 20
 * For group 1, the ATT in 1988 is 30 and so on
@@ -163,8 +167,8 @@ save ../data/baker.dta, replace
 **************************************************************************************************************************************
 **************************************************************************************************************************************
 **************************************************************************************************************************************
-* Callaway and Sant'anna (2018)
-* When there are no coariates X and everybody eventually gets treated, Callaway & Sant'Anna (2018) suggest to estimate ATT(g,t) using
+* Callaway and Sant'anna (2020)
+* When there are no coariates X and everybody eventually gets treated, Callaway & Sant'Anna (2020) suggest to estimate ATT(g,t) using
 * ATT(g,t) = E [ (Gg/E[Gg] - ( 1-Dt)p/1-p/E[1-Dt] )( Yt - Y_{g-1}) ]
 **************************************************************************************************************************************
 **************************************************************************************************************************************
@@ -251,7 +255,7 @@ gen w0 = ((1 - g1)*pg1_1991/(1 - pg1_1991))/g1_cont_1991mean
 **************************************************************************************************************************************
 egen att_11 = mean(w1*ypost)
 egen att_10 = mean(w1*ypre)
-egen att_01 =  mean(w0*ypost)
+egen att_01 = mean(w0*ypost)
 egen att_00 = mean(w0*ypre)
 
 **************************************************************************************************************************************
