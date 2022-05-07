@@ -1,3 +1,8 @@
+################################################################################
+# name: moviestar.R
+# author: scott cunningham, terry tsai and hugo sant'anna
+# description: illustrate collider bias with select samples
+################################################################################
 library(tidyverse)
 
 set.seed(3444)

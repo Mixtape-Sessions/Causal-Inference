@@ -1,3 +1,8 @@
+################################################################################
+# name: collider_discrimination.R
+# author: scott cunningham, terry tsai and hugo sant'anna
+# description: illustrate collider bias with bad controls
+################################################################################
 library(tidyverse)
 library(stargazer)
 
